@@ -1,13 +1,14 @@
 import TweetList from './TweetList';
 import TweetSubmit from './TweetSubmit';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import fetchData from "../fetch_data/globaltweet"
 
 const GlobalPage = () =>{
-    const [tweets, setTweets] = useState([
-        {id: 11, author: "JS is good1", body: "body1", likes: 10},
-        {id: 22, author: "JS is good2", body: "body2", likes: 2},
-        {id: 333, author: "JS is good3", body: "body3", likes : 0}
-      ])
+    const [tweets, setTweets] = useState([])
+
+    useEffect( () => {
+      fetchData('GET', 'http://127.0.0.1:8000/api/tweets/').then( xhr => setTweets(xhr.response.results))
+    },[])
     
     
       const showArray = () => {
@@ -30,6 +31,7 @@ const GlobalPage = () =>{
     <TweetSubmit addTweet = {addTweet}/>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
+    <button onClick= {() => fetchData('GET', `http://127.0.0.1:8000/api/tweets/115`)}>Fetch data</button>
     </>
     )
 }

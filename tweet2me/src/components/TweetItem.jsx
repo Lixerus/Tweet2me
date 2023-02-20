@@ -4,32 +4,27 @@ import { Link } from "react-router-dom"
 
 const TweetItem = ({post, deleteTweet, retweetTweet}) =>{
   const [likes, setLikes] = useState(post.likes)
-  const viewUrl = `/tweet/${post.id}`
 
-  const tweetLikeAction = (tweet) => {
-    const currentLikes = tweet.likes+1
+  const tweetLikeAction = (likes) => {
+    const currentLikes = likes+1
     setLikes(currentLikes)
-    tweet.likes = currentLikes
   }
 
-  const doNothing = () => null
-  
     return(
         <div className='row gy-3'>
           <div className='col-md border bg-light rounded'>
-            <div className="fs-5 text-start"> {post.author}</div>
-            <div className="p-3"> {post.body}</div>
+            <div className="fs-5 text-start"> {post.user.username}</div>
+            <div className="p-3"> {post.content}</div>
             <div>{likes}</div>
-            <TweetButton label = "like" onClick = {() => tweetLikeAction(post)}/>
+            <TweetButton label = "like" onClick = {() => tweetLikeAction(likes)}/>
             <TweetButton label = "delete" onClick = {() => deleteTweet(post)} />
-            <Link to = {viewUrl} state = {{id: post.id}}>
-            <TweetButton label = "view" onClick = {() => doNothing()}/>
+            <Link to = {`/tweet/${post.id}`} state = {{id: post.id}}>
+            <TweetButton label = "view" onClick = {() => null}/>
             </Link>
             <TweetButton label = "retweet" onClick = {() => retweetTweet({...post, id:Date.now()})}/>
           </div>
         </div>
     )
 }
-
 
 export default TweetItem

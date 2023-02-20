@@ -11,13 +11,13 @@ const TweetSubmit = (props) => {
 
     function handleTextSubmit(text){
         if (text !== '')
-            props.addTweet({id:Date.now(), author:"Author", body: text, likes:1})
+            props.addTweet({id:Date.now(), user : {username :"Author"}, content: text, likes:1})
             setText('')
     }
 
 
     return (
-    <div className='p-3'>
+    <div className='p-3-down'>
         <textarea className="form-control m-1" rows="3" placeholder='Ваш Твит' value = {text} onChange={handleTextChange}></textarea>
         <button type='submit' className='btn-primary rounded m-1' onClick={() => handleTextSubmit(text)}>Отправить</button>
     </div>
