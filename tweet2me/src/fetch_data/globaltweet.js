@@ -5,8 +5,6 @@ const fetchdata = (method, url, data=null, headers=null) => {
         xhr.responseType = 'json'
 
         xhr.withCredentials = true
-        console.log(data)
-        console.log(headers)
 
         if (headers !== null){
             for(let key in headers){
@@ -21,7 +19,11 @@ const fetchdata = (method, url, data=null, headers=null) => {
             reject(xhr.response)
         }
         xhr.onerror = () => reject(xhr.response)
-        xhr.send(JSON.stringify(data))
+
+        if (data !== null)
+            xhr.send(JSON.stringify(data))
+        else
+            xhr.send()
     })
 }
 

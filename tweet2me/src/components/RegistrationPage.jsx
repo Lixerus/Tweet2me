@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import fetchdata from "../fetch_data/globaltweet"
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const RegistrationForm = () =>{
     const [csrfToken, setCsrfToken] = useState('')
+    const [errorMsg, setErrorMsg] = useState(null)
+    const navigate = useNavigate();
 
     let usernameInput = useRef('')
     let emailInput = useRef('')
@@ -41,66 +43,62 @@ const RegistrationForm = () =>{
     }
 
     const handleRegistration = () => {
-      const data = {username:usernameInput.current.value.trim(), password:passwordInput.current.value.trim()}
+      const data = {username:usernameInput.current.value.trim(), email:emailInput.current.value.trim(), password:passwordInput.current.value.trim()}
       fetchdata("POST", 'http://localhost:8000/register/', data , {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
       .then((xhr) => {
-        console.log(xhr.response)
+        setErrorMsg(old => null)
+        navigate('/')
       })
-      .catch( e => console.log(e) )
+      .catch( e => {
+        const newErrorMsg = e
+        setErrorMsg(old => newErrorMsg)
+       } )
     }
 
     const onSubmit = (e) =>{
         const errorText = {}
-        if (e.target.form.reportValidity() || validateFields(errorText)){
+        if (e.target.form.reportValidity() && validateFields(errorText)){
+          console.log("Im in on valid")
           handleRegistration()
         }
+        else{
+          console.log("Im in invalid")
+          setErrorMsg(errorText)
+        }
     }
+
     return (
     <>
     <div className="container d-flex vh-100 justify-content-center align-items-center">
       <div className="col-4">
-       <form>
-        <h3 className="text-center p-3 bold">
-          Register
-        </h3>
-      {/* <!-- Username input --> */}
-            <label className="w-100 mb-4"> Username*
-              <input type="text" ref={usernameInput} className="form-control" name='username' minLength="3" maxLength='25' autoComplete="off"/>
+        <form>
+
+        <h3 className="text-center p-3 bold">Register</h3>
+
+            <label className="w-100 mb-4"> Username
+              <input type="text" ref={usernameInput} className="form-control" name='username' minLength="3" maxLength='25' autoComplete="off" required="on"/>
             </label>
-      {/* <!-- Email input --> */}
+
           <label className="w-100 mb-4">Email address
-            <input type="email"  ref = {emailInput} className="form-control" name='email' minLength="4" maxLength='25' autoComplete="off"/>
+            <input type="email"  ref = {emailInput} className="form-control" name='email' minLength="4" maxLength='25' autoComplete="off" required="on"/>
           </label>
 
-      {/* <!-- Password input --> */}
-          <label className="w-100 mb-4">Password*
-            <input type="password" ref={passwordInput} className="form-control" name='password1' minLength="3" maxLength='25' autoComplete="off"/>
+          <label className="w-100 mb-4">Password
+            <input type="password" ref={passwordInput} className="form-control" name='password1' minLength="3" maxLength='25' autoComplete="off" required="on"/>
           </label>
 
-        {/* <!-- Password input --> */}
-          <label className="w-100 mb-4">Repeat password*
-            <input type="password" ref={repPasswordInput} className="form-control" name='password2' minLength="3" maxLength='25' autoComplete="off"/>
+          <label className="w-100 mb-4">Repeat password
+            <input type="password" ref={repPasswordInput} className="form-control" name='password2' minLength="3" maxLength='25' autoComplete="off" required="on"/>
           </label>
 
-        {/* <!-- 2 column grid layout for inline styling --> */}
-        {/* <div className="row mb-4">
-          <div className="col d-flex justify-content-start">
-            <!-- Checkbox -->
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="" checked />
-              <label className="form-check-label"> Remember me </label>
-            </div>
-          </div>
-          <div className="col d-flex justify-content-end">
-            <!-- Simple link -->
-            <a href="#!">Forgot password?</a>
-          </div>
-        </div> */}
+          {errorMsg && Object.values(errorMsg).map((child) => <div className="text-danger font-weight-bold m-1">{child}</div>)}
+
         <div className="d-flex flex-column align-items-center p-1">
           <button type="button" className="btn btn-primary btn-block m-2" onClick={onSubmit}>Submit</button>
           <Link to='/login' className="m-2">Already registered?</Link>
         </div>
-       </form>
+
+        </form>
       </div>
     </div>
     </>
