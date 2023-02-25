@@ -7,7 +7,7 @@ const GlobalPage = () =>{
     const [tweets, setTweets] = useState([])
 
     useEffect( () => {
-      fetchData('GET', 'http://127.0.0.1:8000/api/tweets/').then( xhr => setTweets(xhr.response.results))
+      fetchData('GET', 'http://localhost:8000/api/tweets/').then( xhr => setTweets(xhr.response.results))
     },[])
     
     
@@ -31,7 +31,7 @@ const GlobalPage = () =>{
     <TweetSubmit addTweet = {addTweet}/>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
-    <button onClick= {() => fetchData('GET', `http://127.0.0.1:8000/api/tweets/115`)}>Fetch data</button>
+    <button onClick= {() => fetchData('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>
     </>
     )
 }
