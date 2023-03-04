@@ -4,6 +4,8 @@ import UserPicture from './UI/UserPicture'
 import DisplayCount from './UI/DisplayCount'
 import fetchdata from '../fetch_data/globaltweet'
 import { CsrfTokenContext } from '../App'
+import MyModal from './UI/MyModal/MyModal'
+import ProfileEditForm from './ProfileEditForm'
 
 
 
@@ -16,8 +18,11 @@ function ProfileBadge(props){
         if (didFollowToggle && !profileLoading){
             didFollowToggle(currentVerb)
         }
+
+
     }
-    return user ? <div className='d-flex justify-content'>
+    return user ? <>
+        <div className='d-flex justify-content'>
         <div className='m-3 p-3'>
         <UserPicture user={user} hideLink/>
         <p><UserDisplay user={user} includeFullName hideLink/></p>
@@ -27,8 +32,9 @@ function ProfileBadge(props){
         <p>{user.bio}</p>
         <button className = 'btn btn-primary' onClick={handleFollowToggle}>{currentVerb}</button>
         </div>
-        <button className='btn btn-primary m-3'>Edit user page</button>
-        </div> : null
+        <button className='btn btn-primary m-3' onClick={() => props.setVisible(true)}>Edit user page</button>
+        </div>
+        </> : null
 }
 
 function ProfileBadgeComponent(props){
@@ -36,6 +42,7 @@ function ProfileBadgeComponent(props){
     const [didLookup , setDidLookup] = useState(false)
     const [profile, setProfile] = useState(null)
     const [profileLoading, setProfileLoading] = useState(null)
+    const [modalIsActive, setModalIsActive] = useState(false)
     let csrfToken = useContext(CsrfTokenContext)
 
     useEffect(()=>{
@@ -46,9 +53,6 @@ function ProfileBadgeComponent(props){
         setDidLookup(true)
         }
     },[username, didLookup, setDidLookup])
-
-
-
 
 
     const handleNewFollow = (actionVerb) =>{
@@ -63,7 +67,15 @@ function ProfileBadgeComponent(props){
         .catch((res) => console.log(res))
 
     }
-    return didLookup === false ? "Loading..." : profile ? <ProfileBadge user={profile} didFollowToggle={handleNewFollow} profileLoading={profileLoading} /> : null
+
+
+    return didLookup === false ? "Loading..." : 
+        profile ? <>
+            <ProfileBadge user={profile} didFollowToggle={handleNewFollow} profileLoading={profileLoading} setVisible={setModalIsActive}/>
+            <MyModal visible={modalIsActive} setVisible={setModalIsActive}>
+                <ProfileEditForm profileData = {profile} setProfile={setProfile} setVisible={setModalIsActive}/>
+            </MyModal>
+            </>: null
 }
 
 export default ProfileBadgeComponent

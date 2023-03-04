@@ -1,8 +1,11 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
+import { CsrfTokenContext } from "../App"
+import fetchdata from "../fetch_data/globaltweet"
 
-const TweetSubmit = (props) => {
+const TweetSubmit = ({addTweet}) => {
 
     const [text, setText] = useState('')
+    const csrfToken = useContext(CsrfTokenContext)
 
     function handleTextChange(event) {
         setText(event.target.value)
@@ -10,9 +13,10 @@ const TweetSubmit = (props) => {
     }
 
     function handleTextSubmit(text){
-        if (text !== '')
-            props.addTweet({id:Date.now(), user : {username :"Author"}, content: text, likes:1})
-            setText('')
+        fetchdata("POST", "http://localhost:8000/api/tweets/create/", {content: text}, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
+        .then( (xhr) => addTweet(xhr.response))
+        .catch(res=> console.log(res))
+        setText('')
     }
 
 

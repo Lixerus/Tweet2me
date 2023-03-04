@@ -1,7 +1,7 @@
 import TweetList from './TweetList';
 import TweetSubmit from './TweetSubmit';
 import { useEffect, useState } from 'react';
-import fetchData from "../fetch_data/globaltweet"
+import fetchData from "../fetch_data/globaltweet";
 
 const GlobalPage = () =>{
     const [tweets, setTweets] = useState([])
@@ -27,7 +27,7 @@ const GlobalPage = () =>{
     
 
     return (
-    <>
+    <> 
     <TweetSubmit addTweet = {addTweet}/>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
