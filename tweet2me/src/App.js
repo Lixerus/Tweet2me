@@ -12,16 +12,19 @@ import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage";
 
 export const CsrfTokenContext = createContext(null);
+export const UsernameContext = createContext(null)
 
 function App() {
 
-  let [csrfToken, setCsrfToken] = useState(null)
+  const [csrfToken, setCsrfToken] = useState(null)
+  const [username, setUsername] = useState(null)
 
   const getCSRF = (e) => {
     fetchdata("GET","http://localhost:8000/api/tweets/csrftoken/")
     .then((xhr) => {
       const csrfToken = xhr.getResponseHeader('X-CSRFToken')
       setCsrfToken(csrfToken)
+      setUsername(prev => xhr.response.username)
     })
     .catch(err => alert(err))
   }
@@ -31,21 +34,21 @@ function App() {
   }, [])
 
   return (
-
+    <UsernameContext.Provider value = {username}>
     <CsrfTokenContext.Provider value = {csrfToken}>
     <Routes>
       <Route path ='/'  element={<Navbar />} >
-        <Route index element={<GlobalPage />} />
+        <Route index element={<GlobalPage getCsrf={getCSRF}/>} />
         <Route path='/feed' element={<FeedPage />}/>
         <Route path='/tweet/:id' element={<DetailViewPage />} />
-        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/profile/:username' element={<ProfilePage />} />
       </Route>
-      <Route path='/register' element={<RegistrationPage />}/>
-      <Route path='/login' element={<LoginPage />}/>
-      <Route path='/logout' element={<LogoutPage />}/>
+      <Route path='/register' element={<RegistrationPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>
+      <Route path='/login' element={<LoginPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>
+      <Route path='/logout' element={<LogoutPage setUsername={setUsername}/>}/>
     </Routes>
     </CsrfTokenContext.Provider>
+    </UsernameContext.Provider>
   );
 }
-
 export default App;

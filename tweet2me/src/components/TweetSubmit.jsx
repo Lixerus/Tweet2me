@@ -3,22 +3,19 @@ import { CsrfTokenContext } from "../App"
 import fetchdata from "../fetch_data/globaltweet"
 
 const TweetSubmit = ({addTweet}) => {
-
     const [text, setText] = useState('')
     const csrfToken = useContext(CsrfTokenContext)
 
     function handleTextChange(event) {
         setText(event.target.value)
-        console.log(event.target.value)
     }
 
-    function handleTextSubmit(text){
+    const handleTextSubmit = (text) => {
         fetchdata("POST", "http://localhost:8000/api/tweets/create/", {content: text}, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
         .then( (xhr) => addTweet(xhr.response))
         .catch(res=> console.log(res))
         setText('')
     }
-
 
     return (
     <div className='p-3-down'>

@@ -1,6 +1,6 @@
 import UserLink from "./UserLink"
 
-function UserDisplay(props){
+const UserDisplay = (props) => {
     const {user, includeFullName, hideLink} = props
     const nameDisplay = includeFullName === true ? `${user.first_name} ${user.last_name} ` : null
     return(<>
@@ -11,4 +11,4 @@ function UserDisplay(props){
   }
   
 
-  export default UserDisplay
+export default UserDisplay

@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useContext } from "react"
 import fetchdata from "../fetch_data/globaltweet"
 import {Link, useNavigate} from 'react-router-dom'
+import { CsrfTokenContext } from "../App"
 
-const RegistrationForm = () =>{
-    const [csrfToken, setCsrfToken] = useState('')
+const RegistrationForm = ({setCsrfToken, setUsername}) =>{
+    const csrfToken = useContext(CsrfTokenContext)
     const [errorMsg, setErrorMsg] = useState(null)
     const navigate = useNavigate();
 
@@ -11,19 +12,6 @@ const RegistrationForm = () =>{
     let emailInput = useRef('')
     let passwordInput = useRef('')
     let repPasswordInput = useRef('')
-    
-    const getCSRF = (e) => {
-      fetchdata("GET","http://localhost:8000/api/tweets/csrftoken/")
-      .then((xhr) => {
-        const csrfToken = xhr.getResponseHeader('X-CSRFToken')
-        setCsrfToken(csrfToken)
-      })
-      .catch(err => alert(err))
-    }
-
-    useEffect(()=> {
-      getCSRF()
-    }, [])
 
     const validateFields = (errorText) =>{
         let formIsValid = true
@@ -47,6 +35,8 @@ const RegistrationForm = () =>{
       fetchdata("POST", 'http://localhost:8000/register/', data , {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
       .then((xhr) => {
         setErrorMsg(old => null)
+        setCsrfToken()
+        setUsername(prev => usernameInput.current.value.trim())
         navigate('/')
       })
       .catch( e => {
@@ -72,7 +62,6 @@ const RegistrationForm = () =>{
     <div className="container d-flex vh-100 justify-content-center align-items-center">
       <div className="col-4">
         <form>
-
         <h3 className="text-center p-3 bold">Register</h3>
 
             <label className="w-100 mb-4"> Username
@@ -91,13 +80,13 @@ const RegistrationForm = () =>{
             <input type="password" ref={repPasswordInput} className="form-control" name='password2' minLength="3" maxLength='25' autoComplete="off" required="on"/>
           </label>
 
-          {errorMsg && Object.values(errorMsg).map((child) => <div className="text-danger font-weight-bold m-1">{child}</div>)}
+          {errorMsg && Object.values(errorMsg).map((child) => <div className="text-danger font-weight-bold m-1" key={child}>{child}</div>)}
 
         <div className="d-flex flex-column align-items-center p-1">
           <button type="button" className="btn btn-primary btn-block m-2" onClick={onSubmit}>Submit</button>
+          <button className="btn-primary btn-sm" onClick={() => navigate(-1)}>Back</button>
           <Link to='/login' className="m-2">Already registered?</Link>
         </div>
-
         </form>
       </div>
     </div>

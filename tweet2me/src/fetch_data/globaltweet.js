@@ -23,7 +23,7 @@ const fetchdata = (method, url, data=null, headers=null) => {
         if (data !== null)
             xhr.send(JSON.stringify(data))
         else
-            xhr.send(JSON.stringify(data))
+            xhr.send()
     })
 }
 

@@ -1,33 +1,23 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState, useContext } from "react"
 import fetchdata from "../fetch_data/globaltweet"
 import {Link, useNavigate} from 'react-router-dom'
+import { CsrfTokenContext } from "../App"
 
-const LoginPage = () =>{
-    const [csrfToken, setCsrfToken] = useState('')
+const LoginPage = ({setCsrfToken, setUsername}) =>{
+    const csrfToken = useContext(CsrfTokenContext)
     const [errorMsg, setErrorMsg] = useState(null)
     const navigate = useNavigate();
 
-    let usernameInput = useRef('')
-    let passwordInput = useRef('')
+    const usernameInput = useRef('')
+    const passwordInput = useRef('')
     
-    const getCSRF = (e) => {
-      fetchdata("GET","http://localhost:8000/api/tweets/csrftoken/")
-      .then((xhr) => {
-        const csrfToken = xhr.getResponseHeader('X-CSRFToken')
-        setCsrfToken(csrfToken)
-      })
-      .catch(err => alert(err))
-    }
-
-    useEffect(()=> {
-      getCSRF()
-    }, [])
-
     const handleRegistration = () => {
       const data = {username:usernameInput.current.value.trim(), password:passwordInput.current.value.trim()}
       fetchdata("POST", 'http://localhost:8000/login/', data , {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
       .then((xhr) => {
         setErrorMsg(old => null)
+        setCsrfToken()
+        setUsername(prev => usernameInput.current.value.trim())
         navigate('/')
       })
       .catch( e => {
@@ -64,10 +54,11 @@ const LoginPage = () =>{
             <input type="password" ref={passwordInput} className="form-control" name='password1' minLength="3" maxLength='25' autoComplete="off" required="on"/>
           </label>
 
-          {errorMsg && Object.values(errorMsg).map((child) => <div className="text-danger font-weight-bold m-1">{child}</div>)}
+          {errorMsg && Object.values(errorMsg).map((child) => <div className="text-danger font-weight-bold m-1" key={child}>{child}</div>)}
 
         <div className="d-flex flex-column align-items-center p-1">
           <button type="button" className="btn btn-primary btn-block m-2" onClick={onSubmit}>Submit</button>
+          <button className="btn-primary btn-sm" onClick={() => navigate(-1)}>Back</button>
           <Link to='/register' className="m-2">Need to register?</Link>
         </div>
 

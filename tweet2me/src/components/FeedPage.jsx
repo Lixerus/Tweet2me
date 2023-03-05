@@ -1,26 +1,17 @@
 import TweetList from './TweetList';
 import TweetSubmit from './TweetSubmit';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import fetchdata from "../fetch_data/globaltweet"
+import { CsrfTokenContext } from '../App';
 
 const FeedPage = () =>{
     const [tweets, setTweets] = useState([])
-    const [csrfToken, setCsrfToken] = useState('')
-// make getCSRF method better and more appropriate
-    const getCSRF = () => {
-        fetchdata("GET","http://localhost:8000/api/tweets/csrftoken/")
-        .then((xhr) => {
-            const csrfToken = xhr.getResponseHeader('X-CSRFToken')
-            setCsrfToken(prev => csrfToken)
-            fetchdata('POST', `http://localhost:8000/api/tweets/feed/`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
-            .then( xhr => setTweets(xhr.response.results))
-        })
-        .catch(err => alert(err))
-      }
+    const csrfToken = useContext(CsrfTokenContext)
 
     useEffect( () => {
-        getCSRF()
-
+      fetchdata('POST', `http://localhost:8000/api/tweets/feed/`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
+      .then(xhr => setTweets(xhr.response.results))
+      .catch((res) => console.log(res))
     },[])
     
     

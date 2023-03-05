@@ -1,43 +1,43 @@
 import { Outlet } from "react-router-dom"
 import { Link } from "react-router-dom"
+import { useContext } from "react"
+import { UsernameContext } from "../../App"
 
 const Navbar = () =>{
+    const username = useContext(UsernameContext)
     return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand navbar-light bg-light">
     <div className="container-fluid">
       <Link className="navbar-brand" to="/">Tweet2me</Link>
-      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon">HI</span>
-      </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           <li className="nav-item">
-            <Link className="nav-link" aria-current="page" to="/">Home</Link>
+            <Link className="nav-link" aria-current="page" to="/">Global</Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/logout">Logout</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/profile">Profile</Link>
-          </li>
-          <li className="nav-item">
+          {username !== '' ?  <li className="nav-item">
             <Link className="nav-link" to="/feed">Feed</Link>
-          </li>
-          <li className="nav-item">
+          </li> : null}
+          {username !== '' ? <li className="nav-item">
+            <Link className="nav-link" to={`/profile/${username}`}>Profile</Link>
+          </li> : null}
+          {username === '' ? <li className="nav-item">
             <Link className="nav-link" to="/login">Login</Link>
-          </li>
-          <li className="nav-item">
+          </li> : null}
+          {username === '' ? <li className="nav-item">
             <Link className="nav-link" to="/register">Register</Link>
-          </li>
+          </li> : null}
+          {username !== '' ?  <li className="nav-item">
+            <Link className="nav-link" to="/logout">Logout</Link>
+          </li> : null}
           {/* <li className="nav-item"></li>
             <a className="nav-link" href="{% url "social:begin" "github" %}">Login with Github</a>
           </li> */}
+          <li className="nav-item">
+            {username}
+          </li>
         </ul>
-        <form className="d-flex d-none" role="search">
-          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button className="btn btn-outline-success" type="submit">Search</button>
-        </form>
+          
       </div>
     </div>
   </nav>

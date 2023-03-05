@@ -6,7 +6,7 @@ import { CsrfTokenContext } from "../App"
 const RetweetComponent = ({tweet, id, retweetTweet, setVisibleModal}) => {
 
     const [textRetweet, setTextRetweet] = useState('')
-    let csrfToken = useContext(CsrfTokenContext)
+    const csrfToken = useContext(CsrfTokenContext)
 
     const retweet = () =>{
         const data = {
@@ -20,7 +20,10 @@ const RetweetComponent = ({tweet, id, retweetTweet, setVisibleModal}) => {
             setTextRetweet('')
             setVisibleModal(false)
         })
-        .catch((e) => console.log(e))
+        .catch((e) => {
+            console.log(e)
+            alert("Error")
+        })
     }
 
     return (

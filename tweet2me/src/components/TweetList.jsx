@@ -14,7 +14,7 @@ const TweetList = ({tweets, deleteTweet, retweetTweet}) => {
         </>
     </MyModal>
     <div className="container p-3">
-        <div className='fw-bold fs-3 p-2'>
+        <div className='fw-bold fs-3'>
             Tweets
         </div>
         {tweets.map((item) => 

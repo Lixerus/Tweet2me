@@ -1,27 +1,16 @@
 import { useNavigate } from "react-router-dom"
 import fetchdata from "../fetch_data/globaltweet"
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
+import { CsrfTokenContext } from "../App"
 
-const LogouPage = () => {
-    const [csrfToken, setCsrfToken] = useState('')
+const LogouPage = ({setUsername}) => {
+    const csrfToken = useContext(CsrfTokenContext)
     const navigate = useNavigate()
-
-    const getCSRF = (e) => {
-        fetchdata("GET","http://localhost:8000/api/tweets/csrftoken/")
-        .then((xhr) => {
-          const csrfToken = xhr.getResponseHeader('X-CSRFToken')
-          setCsrfToken(csrfToken)
-        })
-        .catch(err => alert(err))
-      }
-  
-      useEffect(()=> {
-        getCSRF()
-      }, [])
 
     const handleRegistration = () => {
         fetchdata("POST", 'http://localhost:8000/logout/',null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
         .then((xhr) => {
+          setUsername('')
           navigate('/')
         })
         .catch( e => {
@@ -29,8 +18,10 @@ const LogouPage = () => {
          } )
       }
 
-    return (
-    <button type="button" className="btn btn-primary btn-block m-2" onClick={handleRegistration}>Logout</button>
+    return (<div className="btn btn-group d-flex">
+    <button type="button" className="btn btn-primary btn-block m-2 btn-lg" onClick={handleRegistration}>Logout</button>
+    <button className="btn-primary btn-block m-2 btn-lg" onClick={() => navigate(-1)}>Back</button>
+    </div>
     )
 }
 

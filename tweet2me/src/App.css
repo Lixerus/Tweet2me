@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+body{
+  background-color: rgb(237, 241, 251);
+}
+
+.pointer{
+  cursor: pointer;
+}

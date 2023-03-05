@@ -3,8 +3,11 @@ import { useContext, useState } from 'react'
 import { Link } from "react-router-dom"
 import fetchdata from '../fetch_data/globaltweet'
 import { CsrfTokenContext } from '../App'
+import ParentTweet from './ParentTweet'
+import  UserPicture  from './UI/UserPicture'
+import  UserDisplay  from './UI/UserDisplay'
 
-const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction}) =>{
+const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction, isRetweet}) =>{
   const [likes, setLikes] = useState(post.likes)
   let csrfToken = useContext(CsrfTokenContext)
   
@@ -23,20 +26,19 @@ const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction}) =>{
 
 
     return(
-        <div className='row gy-3'>
-          <div className='col-md border bg-light rounded'>
-            <div className="fs-5 text-start"> {post.user.username}</div>
-            <div className="p-3"> {post.content}</div>
-            <div>{likes} likes</div>
+          <div className = {isRetweet===true ? 'col-md border bg-light rounded py-3 px-1' : 'col-md border bg-light rounded py-4 my-5 px-4'}>
+            {post.is_retweet === true && <div className='mb-2'><span className='small text-muted'>Retweet <UserDisplay user={post.user} /></span></div>}
+            <UserPicture user={post.user} />
+            <UserDisplay includeFullName user={post.user}/>
+            <div className="my-3 py-3 rounded bg-white"> {post.content}</div>
+            <ParentTweet post={post}/>
+            {!hideAction && <span className="m-1">{likes} likes</span>}
             {!hideAction && <TweetButton label = "like" onClick = {() => tweetLikeAction(likes, "like")}/>}
             {!hideAction &&<TweetButton label = "dislike" onClick = {() => tweetLikeAction(likes, "unlike")}/>}
             {!hideAction &&<TweetButton label = "delete" onClick = {() => deleteTweet(post)} />}
-            <Link to = {`/tweet/${post.id}`} state = {{id: post.id}}>
-            {!hideAction && <TweetButton label = "view" onClick = {() => null}/>}
-            </Link>
+            <Link to = {`/tweet/${post.id}`} state = {{id: post.id}}><TweetButton label = "view" onClick = {() => null}/></Link>
             {!hideAction && <TweetButton label = "retweet" onClick = {() => onRetweet()}/>}
           </div>
-        </div>
     )
 }
 
