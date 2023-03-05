@@ -31,7 +31,7 @@ const ProfilePage = () =>{
     
     return (
     <>
-    <ProfileBadgeComponent username={urlusername} />
+    <ProfileBadgeComponent username={username} />
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
     <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>

@@ -30,9 +30,9 @@ const Navbar = () =>{
           {username !== '' ?  <li className="nav-item">
             <Link className="nav-link" to="/logout">Logout</Link>
           </li> : null}
-          {/* <li className="nav-item"></li>
-            <a className="nav-link" href="{% url "social:begin" "github" %}">Login with Github</a>
-          </li> */}
+          {username === '' ? <li className="nav-item">
+            <a className="nav-link" href="http://localhost:8000/login/github/">Login with Github</a>
+          </li> : null}
           <li className="nav-item">
             {username}
           </li>

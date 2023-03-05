@@ -30,7 +30,7 @@ const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction, isRet
             {post.is_retweet === true && <div className='mb-2'><span className='small text-muted'>Retweet <UserDisplay user={post.user} /></span></div>}
             <UserPicture user={post.user} />
             <UserDisplay includeFullName user={post.user}/>
-            <div className="my-3 py-3 rounded bg-white"> {post.content}</div>
+            <div className="my-3 py-3 ps-2 rounded bg-white"> {post.content}</div>
             <ParentTweet post={post}/>
             {!hideAction && <span className="m-1">{likes} likes</span>}
             {!hideAction && <TweetButton label = "like" onClick = {() => tweetLikeAction(likes, "like")}/>}

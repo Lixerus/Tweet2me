@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import TweetItem from "./TweetItem"
-import { Link, useParams, useNavigate } from "react-router-dom"
+import {useParams, useNavigate } from "react-router-dom"
 import fetchData from "../fetch_data/globaltweet"
 
 const DetailViewPage = () => {

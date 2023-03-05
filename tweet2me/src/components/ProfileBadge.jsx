@@ -17,6 +17,7 @@ const ProfileBadge = (props) =>{
         }
     }
     return user ? <>
+    {console.log('profile badge com loaded')}
         <div className='d-flex'>
         <div className='m-3 p-3 border border-secondary fs-5'>
         <div className='d-flex justify-content-between'>

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import fetchdata from "../fetch_data/globaltweet"
-import {useState, useEffect, useContext} from 'react'
+import { useContext} from 'react'
 import { CsrfTokenContext } from "../App"
 
 const LogouPage = ({setUsername}) => {

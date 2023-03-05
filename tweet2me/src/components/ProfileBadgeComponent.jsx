@@ -1,4 +1,4 @@
-import { CsrfTokenContext, UsernameContext } from '../App'
+import { CsrfTokenContext } from '../App'
 import MyModal from './UI/MyModal/MyModal'
 import ProfileEditForm from './ProfileEditForm'
 import fetchdata from '../fetch_data/globaltweet'
@@ -13,7 +13,6 @@ const ProfileBadgeComponent = ({username}) =>{
     let csrfToken = useContext(CsrfTokenContext)
 
     useEffect(()=>{
-        console.log(`use effect 1 ${didLookup}`)
         fetchdata("GET", `http://localhost:8000/api/profile/${username}/`)
         .then( (xhr) => setProfile(prev => xhr.response))
         .then( () => setDidLookup(true))
@@ -34,6 +33,7 @@ const ProfileBadgeComponent = ({username}) =>{
 
     return didLookup === false ? "Loading..." : 
         profile ? <>
+        {console.log('profile com loaded')}
             <ProfileBadge user={profile} didFollowToggle={handleNewFollow} profileLoading={profileLoading} setVisible={setModalIsActive}/>
             <MyModal visible={modalIsActive} setVisible={setModalIsActive}>
                 <ProfileEditForm profileData = {profile} setProfile={setProfile} setVisible={setModalIsActive}/>

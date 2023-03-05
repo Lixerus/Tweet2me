@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from "react"
+import { useRef, useState, useContext } from "react"
 import fetchdata from "../fetch_data/globaltweet"
 import {Link, useNavigate} from 'react-router-dom'
 import { CsrfTokenContext } from "../App"

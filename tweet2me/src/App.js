@@ -38,7 +38,7 @@ function App() {
     <CsrfTokenContext.Provider value = {csrfToken}>
     <Routes>
       <Route path ='/'  element={<Navbar />} >
-        <Route index element={<GlobalPage getCsrf={getCSRF}/>} />
+        <Route path='/' element={<GlobalPage getCsrf={getCSRF}/>} />
         <Route path='/feed' element={<FeedPage />}/>
         <Route path='/tweet/:id' element={<DetailViewPage />} />
         <Route path='/profile/:username' element={<ProfilePage />} />

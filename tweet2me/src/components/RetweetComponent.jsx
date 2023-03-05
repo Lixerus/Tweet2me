@@ -1,6 +1,6 @@
 import TweetItem from "./TweetItem"
 import fetchdata from "../fetch_data/globaltweet"
-import { useRef, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { CsrfTokenContext } from "../App"
 
 const RetweetComponent = ({tweet, id, retweetTweet, setVisibleModal}) => {

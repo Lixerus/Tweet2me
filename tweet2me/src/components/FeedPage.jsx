@@ -12,7 +12,7 @@ const FeedPage = () =>{
       fetchdata('POST', `http://localhost:8000/api/tweets/feed/`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
       .then(xhr => setTweets(xhr.response.results))
       .catch((res) => console.log(res))
-    },[])
+    },[csrfToken])
     
     
       const showArray = () => {
