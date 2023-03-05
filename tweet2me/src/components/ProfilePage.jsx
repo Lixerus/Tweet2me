@@ -1,5 +1,6 @@
 import TweetList from './TweetList';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import ProfileBadgeComponent from './ProfileBadgeComponent';
 import fetchdata from "../fetch_data/globaltweet"
 import { useParams } from "react-router-dom"
@@ -32,6 +33,7 @@ const ProfilePage = () =>{
     return (
     <>
     <ProfileBadgeComponent username={username} />
+    {username !== '' ? <Link to={`/profile/${username}/hiddentweets`} className="text-decoration-none text-dark pointer m-3">Показать скрытые твиты</Link> : null}
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
     <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>

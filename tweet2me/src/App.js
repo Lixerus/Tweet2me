@@ -10,6 +10,7 @@ import LoginPage from "./components/LoginPage";
 import LogoutPage from "./components/LogoutPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage";
+import HiddenTweetsPage from "./components/HiddenTweetsPage";
 
 export const CsrfTokenContext = createContext(null);
 export const UsernameContext = createContext(null)
@@ -38,10 +39,11 @@ function App() {
     <CsrfTokenContext.Provider value = {csrfToken}>
     <Routes>
       <Route path ='/'  element={<Navbar />} >
-        <Route path='/' element={<GlobalPage getCsrf={getCSRF}/>} />
+        <Route index element={<GlobalPage getCsrf={getCSRF}/>} />
         <Route path='/feed' element={<FeedPage />}/>
         <Route path='/tweet/:id' element={<DetailViewPage />} />
         <Route path='/profile/:username' element={<ProfilePage />} />
+        <Route path='/profile/:username/hiddentweets' element={<HiddenTweetsPage />} />
       </Route>
       <Route path='/register' element={<RegistrationPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>
       <Route path='/login' element={<LoginPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>

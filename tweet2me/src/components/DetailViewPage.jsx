@@ -21,7 +21,7 @@ const DetailViewPage = () => {
     return (<>
         {loadingMode ? <h1>Lading data {console.log(loadingMode)}</h1> :
         <>
-        <TweetItem post = {tweet} deleteTweet={() => null} retweetTweet={() => null} />
+        <TweetItem post = {tweet} deleteTweet={() => null} retweetTweet={() => null} hideAction/>
         <div className="d-flex justify-content-center">
         <button className="btn-primary btn-lg" onClick={() => navigate(-1)}>Back</button>
         </div>
