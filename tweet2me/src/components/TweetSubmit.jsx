@@ -13,7 +13,15 @@ const TweetSubmit = ({addTweet}) => {
     const handleTextSubmit = (text) => {
         fetchdata("POST", "http://localhost:8000/api/tweets/create/", {content: text}, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
         .then( (xhr) => addTweet(xhr.response))
-        .catch(res=> console.log(res))
+        .catch(res=> {
+            console.log(res)
+            if (res.detail === "Authentication credentials were not provided."){
+                alert("Error! You need to login first")
+            }
+            else{
+            alert("Error")
+            }
+        })
         setText('')
     }
 

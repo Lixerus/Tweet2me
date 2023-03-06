@@ -6,16 +6,25 @@ import { CsrfTokenContext } from '../App'
 import ParentTweet from './ParentTweet'
 import  UserPicture  from './UI/UserPicture'
 import  UserDisplay  from './UI/UserDisplay'
+import { UsernameContext } from '../App'
 
-const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction, isRetweet, seen}) =>{
+const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction, isRetweet, seen, detailView}) =>{
   const [likes, setLikes] = useState(post.likes)
   let csrfToken = useContext(CsrfTokenContext)
+  const username = useContext(UsernameContext)
   
   // реализовать со статусом, статус : лайкнуто или нет с помощью доп поля вычислимого на серве
   const tweetLikeAction = (action) => {
     fetchdata("POST", "http://localhost:8000/api/tweets/action/", {id : post.id, action: action}, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
     .then((xhr) => setLikes(xhr.response.likes))
-    .catch((res) => console.log(res))
+    .catch((res) => {
+      if (res.detail === "Authentication credentials were not provided."){
+        alert("Error! You need to login first")
+      }
+      else{
+        alert("Error!")
+      }
+    })
   }
 
   const onRetweet = () =>{
@@ -42,16 +51,15 @@ const TweetItem = ({post, deleteTweet, setModal, setRetweetId, hideAction, isRet
                    <UserPicture user={post.user} />
                    <UserDisplay includeFullName user={post.user}/>
                 </div>
-                {(!seen && !isRetweet) && <div><span className="fs-6 fw-light m-1">Скрыть</span><input type="checkbox" className="p-1" onClick={() => hideTweet("seen")}/></div>}
-                {(seen && !isRetweet) && <div><span className="fs-6 fw-light m-1">Вернуть</span><input type="checkbox" className="p-1" onClick={() => hideTweet("unseen")}/></div>}
+                {(!seen && !isRetweet && username !== '' && !detailView) && <div><span className="fs-6 fw-light m-1">Скрыть</span><input type="checkbox" className="p-1" onClick={() => hideTweet("seen")}/></div>}
+                {(seen && !isRetweet && username !== '' && !detailView) && <div><span className="fs-6 fw-light m-1">Вернуть</span><input type="checkbox" className="p-1" onClick={() => hideTweet("unseen")}/></div>}
             </div>
             <div className="my-3 py-3 ps-2 rounded bg-white"> {post.content}</div>
             <ParentTweet post={post}/>
             {!isRetweet && <span className="m-1">{likes} likes</span>}
             {!isRetweet && <TweetButton label = "like" onClick = {() => tweetLikeAction("like")}/>}
             {!isRetweet && <TweetButton label = "dislike" onClick = {() => tweetLikeAction("unlike")}/>}
-            {/* {!hideAction &&<TweetButton label = "delete" onClick = {() => deleteTweet(post)} />} */}
-            <Link to = {`/tweet/${post.id}`} state = {{id: post.id}}><TweetButton label = "view" onClick = {() => null}/></Link>
+            {!detailView && <Link to = {`/tweet/${post.id}`} state = {{id: post.id}}><TweetButton label = "view" onClick = {() => null}/></Link>}
             {!hideAction && <TweetButton label = "retweet" onClick = {() => onRetweet()}/>}
           </div>
     )

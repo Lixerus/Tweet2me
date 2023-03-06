@@ -6,12 +6,21 @@ import { CsrfTokenContext } from '../App';
 
 const HiddenTweetsPage = () => {
     const [tweets, setTweets] = useState([])
+    const [didLookup , setDidLookup] = useState(false)
     const csrfToken = useContext(CsrfTokenContext)
 
     useEffect( () => {
       fetchdata('POST', `http://localhost:8000/api/tweets/hiddentweets/`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
-      .then(xhr => setTweets(xhr.response.results))
-      .catch((res) => console.log(res))
+      .then((xhr) => {
+        setTweets(xhr.response.results)
+        setDidLookup(true)
+      })
+      .catch((res) => {
+        console.log(res)
+        if (res.detail === "Authentication credentials were not provided."){
+          alert("Error! You need to login first")}
+        else{alert("Error")}
+      })
     },[csrfToken])
     
       const showArray = () => {
@@ -31,7 +40,7 @@ const HiddenTweetsPage = () => {
 
     return (
     <>
-    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} hideAction seen/>
+    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} hideAction seen didLookup={didLookup}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
     <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/feed`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})}>Fetch data</button>
     </>

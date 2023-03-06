@@ -5,9 +5,14 @@ import fetchData from "../fetch_data/globaltweet";
 
 const GlobalPage = ({getCsrf}) =>{
     const [tweets, setTweets] = useState([])
+    const [didLookup , setDidLookup] = useState(false)
 
     useEffect( () => {
-      fetchData('GET', 'http://localhost:8000/api/tweets/').then( xhr => setTweets(xhr.response.results))
+      fetchData('GET', 'http://localhost:8000/api/tweets/')
+      .then( (xhr) => {
+        setTweets(xhr.response.results)
+        setDidLookup(true)
+      })
       .catch((res) => console.log(res))
     },[])
     
@@ -30,7 +35,7 @@ const GlobalPage = ({getCsrf}) =>{
     return (
     <> 
     <TweetSubmit addTweet = {addTweet}/>
-    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet}/>
+    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} didLookup={didLookup}/>
     <button onClick= {() => showArray()}>Show tweets objects</button>
     <button onClick= {() => fetchData('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>
     <button onClick= {() => getCsrf()}>Csrf data</button>

@@ -33,7 +33,6 @@ const ProfileBadgeComponent = ({username}) =>{
 
     return didLookup === false ? "Loading..." : 
         profile ? <>
-        {console.log('profile com loaded')}
             <ProfileBadge user={profile} didFollowToggle={handleNewFollow} profileLoading={profileLoading} setVisible={setModalIsActive}/>
             <MyModal visible={modalIsActive} setVisible={setModalIsActive}>
                 <ProfileEditForm profileData = {profile} setProfile={setProfile} setVisible={setModalIsActive}/>

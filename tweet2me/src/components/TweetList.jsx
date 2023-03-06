@@ -4,7 +4,7 @@ import RetweetComponent from './RetweetComponent'
 import { useState } from 'react'
 
 
-const TweetList = ({tweets, deleteTweet, retweetTweet, hideAction, seen}) => {
+const TweetList = ({tweets, deleteTweet, retweetTweet, hideAction, seen, didLookup}) => {
     const [visibleModal, setVisibleModal] = useState(false)
     const [retweetId , setRetweetId] = useState(null)
     return (<>
@@ -14,11 +14,8 @@ const TweetList = ({tweets, deleteTweet, retweetTweet, hideAction, seen}) => {
         </>
     </MyModal>
     <div className="container p-3">
-        <div className='fw-bold fs-3'>
-            Tweets
-        </div>
-        {tweets.map((item) => 
-            <TweetItem post = {item} key = {item.id} deleteTweet = {deleteTweet} setRetweetId={setRetweetId} setModal = {setVisibleModal} hideAction={hideAction} seen={seen}/>)}
+        {didLookup ? <div className='d-flex justify-content-center fw-bold fs-3'>Tweets</div> : <div className='d-flex justify-content-center fw-bold fs-3'>Loading...</div>}
+        {tweets.map((item) => <TweetItem post = {item} key = {item.id} deleteTweet = {deleteTweet} setRetweetId={setRetweetId} setModal = {setVisibleModal} hideAction={hideAction} seen={seen}/>)}
     </div>
     </>
     )
