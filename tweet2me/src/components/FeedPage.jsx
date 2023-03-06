@@ -13,6 +13,21 @@ const FeedPage = () =>{
       .then(xhr => setTweets(xhr.response.results))
       .catch((res) => console.log(res))
     },[csrfToken])
+
+    useEffect( () => {
+    let timer = setInterval(() => {
+      if (tweets && csrfToken){
+      fetchdata('POST', 'http://localhost:8000/api/tweets/longpoll/feed/', {id : tweets[0].id}, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})
+      .then((xhr) => {
+        setTweets(prev => [...xhr.response, ...prev])
+      })
+      .catch( (res) => {
+        console.log(res)
+        console.log("Eror")
+      })}
+    }, 10000)
+    return () => clearInterval(timer)
+  }, [tweets, csrfToken])
     
     
       const showArray = () => {
@@ -20,7 +35,7 @@ const FeedPage = () =>{
       }
     
       const addTweet = (newTweet) => {
-        setTweets([...tweets, newTweet])
+        setTweets([newTweet, ...tweets])
         console.log(newTweet)
       }
     
@@ -29,7 +44,6 @@ const FeedPage = () =>{
         setTweets(tweetsAfterDeletion)
       }
     
-
     return (
     <>
     <TweetSubmit addTweet = {addTweet}/>

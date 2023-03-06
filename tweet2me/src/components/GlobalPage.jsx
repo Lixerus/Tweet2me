@@ -17,7 +17,7 @@ const GlobalPage = ({getCsrf}) =>{
       }
     
       const addTweet = (newTweet) => {
-        setTweets([...tweets, newTweet])
+        setTweets([newTweet, ...tweets])
         console.log(newTweet)
       }
     
