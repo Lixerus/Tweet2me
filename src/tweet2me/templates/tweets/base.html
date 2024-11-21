@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    {% include 'react/css.html' %}
+    <title>Tweet2me</title>
+    <style>
+        .bg-tweetme{
+            background-color: royalblue!important;
+        }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+      {% include "components/navbar.html" %}
+      <div class="container">
+      {% block content %}
+      {% endblock content %}
+      </div>
+    {% include 'react/base_embed.html' %}
+    {% include 'react/js.html' %}
+  </body>
+</html>

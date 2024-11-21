@@ -1,0 +1,12 @@
+{% extends 'tweets/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    <div id="tweet2me-feed"></div>
+
+{% else %}
+    <div id="tweet2me"></div>
+
+{% endif %}
+{% endblock %}

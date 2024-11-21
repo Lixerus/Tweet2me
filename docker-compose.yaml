@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1975
+      - POSTGRES_DB=web_proj
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432"
+
+  webserver:
+    build:
+      context: src/
+    image: django_web_proj
+    volumes:
+      - type: bind
+        source: ./src/tweet2me #delete in prod and add copy
+        target: /app/backend
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build:
+      context: tweet2me/
+    image: react_web_proj  
+    volumes:
+      - type: bind
+        source: ./tweet2me #delete in prod and add copy
+        target: /app/frontend  
+    depends_on:
+      - webserver
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+    command: bash -c "npm start"
+
+volumes:     
+  pgdata:
