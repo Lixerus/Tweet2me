@@ -16,11 +16,6 @@ const GlobalPage = ({getCsrf}) =>{
       .catch((res) => console.log(res))
     },[])
     
-    
-      const showArray = () => {
-        console.log(tweets)
-      }
-    
       const addTweet = (newTweet) => {
         setTweets([newTweet, ...tweets])
         console.log(newTweet)
@@ -36,9 +31,6 @@ const GlobalPage = ({getCsrf}) =>{
     <> 
     <TweetSubmit addTweet = {addTweet}/>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} didLookup={didLookup}/>
-    <button onClick= {() => showArray()}>Show tweets objects</button>
-    <button onClick= {() => fetchData('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>
-    <button onClick= {() => getCsrf()}>Csrf data</button>
     </>
     )
 }

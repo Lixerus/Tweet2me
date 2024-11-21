@@ -11,6 +11,7 @@ import LogoutPage from "./components/LogoutPage";
 import FeedPage from "./components/FeedPage";
 import ProfilePage from "./components/ProfilePage";
 import HiddenTweetsPage from "./components/HiddenTweetsPage";
+import NotFoundPage from './components/NotFoundPage'
 
 export const CsrfTokenContext = createContext(null);
 export const UsernameContext = createContext(null)
@@ -48,6 +49,7 @@ function App() {
       <Route path='/register' element={<RegistrationPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>
       <Route path='/login' element={<LoginPage setCsrfToken = {getCSRF} setUsername = {setUsername}/>}/>
       <Route path='/logout' element={<LogoutPage setUsername={setUsername}/>}/>
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
     </CsrfTokenContext.Provider>
     </UsernameContext.Provider>

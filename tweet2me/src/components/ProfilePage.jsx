@@ -27,10 +27,6 @@ const ProfilePage = () =>{
       )
     },[urlusername])
     
-      const showArray = () => {
-        console.log(tweets)
-      }
-    
       const addTweet = (newTweet) => {
         setTweets([...tweets, newTweet])
         console.log(newTweet)
@@ -44,10 +40,8 @@ const ProfilePage = () =>{
     return (
     <>
     <ProfileBadgeComponent username={username} />
-    {visitorname !== '' ? <Link to={`/profile/${username}/hiddentweets`} className="text-decoration-none text-dark pointer m-3">Показать скрытые твиты</Link> : null}
-    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} didLookup={didLookup}/>
-    <button onClick= {() => showArray()}>Show tweets objects</button>
-    <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/`)}>Fetch data</button>
+    {(visitorname !== '' && visitorname===username) ? <Link to={`/profile/${username}/hiddentweets`} className="text-decoration-none text-dark pointer m-3">Показать скрытые твиты</Link> : null}
+    <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} didLookup={didLookup} hideAction/>
     </>
     )
 }

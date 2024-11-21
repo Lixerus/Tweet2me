@@ -39,12 +39,7 @@ const FeedPage = () =>{
       }, 10000)
       return () => clearInterval(timer)
     }, [tweets, csrfToken])
-    
-    
-    const showArray = () => {
-      console.log(tweets)
-    }
-  
+
     const addTweet = (newTweet) => {
       setTweets([newTweet, ...tweets])
       console.log(newTweet)
@@ -59,8 +54,6 @@ const FeedPage = () =>{
     <>
     <TweetSubmit addTweet = {addTweet}/>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} didLookup={didLookup}/>
-    <button onClick= {() => showArray()}>Show tweets objects</button>
-    <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/feed`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})}>Fetch data</button>
     </>
     )
 }

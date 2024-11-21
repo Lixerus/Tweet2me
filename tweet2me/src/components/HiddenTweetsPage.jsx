@@ -22,11 +22,7 @@ const HiddenTweetsPage = () => {
         else{alert("Error")}
       })
     },[csrfToken])
-    
-      const showArray = () => {
-        console.log(tweets)
-      }
-    
+
       const addTweet = (newTweet) => {
         setTweets([...tweets, newTweet])
         console.log(newTweet)
@@ -39,11 +35,7 @@ const HiddenTweetsPage = () => {
     
 
     return (
-    <>
     <TweetList tweets = {tweets} deleteTweet={deleteTweet} retweetTweet={addTweet} hideAction seen didLookup={didLookup}/>
-    <button onClick= {() => showArray()}>Show tweets objects</button>
-    <button onClick= {() => fetchdata('GET', `http://localhost:8000/api/tweets/feed`, null, {"X-CSRFToken" : `${csrfToken}`, "Content-Type" : "application/json"})}>Fetch data</button>
-    </>
     )
 }
 

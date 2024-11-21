@@ -28,7 +28,11 @@ const ProfileBadgeComponent = ({username}) =>{
             }
             setProfileLoading(false)
         })
-        .catch((res) => console.log(res))
+        .catch((res) => {
+            if (res.detail === "Authentication credentials were not provided."){
+                alert("Error! You need to login first")}
+            else{alert("Error")}
+        })
     }
 
     return didLookup === false ? "Loading..." : 
